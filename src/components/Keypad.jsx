@@ -1,11 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-// 키패드 처리
-// props로 mixedKey boolean
-// true면 키패드에서 눌린 키를(pressedKey) 컴포넌트 MixedKey의 props로 전달
-// 응답값을 가져와 키패드에서 두 개를 시각처리
-
 import createMixedKey from "@/utils/createMixedKey";
-import { useState, useEffect } from "react";
 import useShuffleKeys from "@/utils/useShuffleKeys";
 
 const keypadItems = [
@@ -25,12 +19,30 @@ const keypadItems = [
   { type: "dummy" },
 ];
 
-// 연타 방지 처리
-const Keypad = ({ pressCooldown = 500, onPress }) => {
+const Keypad = ({
+  mixedKey = false,
+  shuffleKey = false,
+  pressCooldown = 500,
+  onPress,
+}) => {
+  const [pressedKey, setPressedKey] = useState(null);
+  const [mixedKeys, setMixedKeys] = useState([]);
   const [cooling, setCooling] = useState(false);
 
   const cooldownUntilRef = useRef(0);
   const timerRef = useRef(null);
+
+  const handleGridClick = (event) => {
+    const button = event.target.closest("button");
+    if (!button || button.classList.contains("kp__btn--dummy")) return;
+
+    const key = button.dataset.key;
+    console.log("버튼 눌림: ", key);
+    if (key != null) {
+      onDigitPress();
+      setPressedKey(Number(key));
+    }
+  };
 
   useEffect(() => {
     return () => timerRef.current && clearTimeout(timerRef.current);
@@ -68,9 +80,6 @@ const Keypad = ({ pressCooldown = 500, onPress }) => {
     },
     [onPress, pressCooldown]
   );
-const Keypad = ({ mixedKey = false, shuffleKey = false }) => {
-  const [pressedKey, setPressedKey] = useState(null);
-  const [mixedKeys, setMixedKeys] = useState([]);
 
   const { keys: shuffledKeys, onDigitPress } = useShuffleKeys({
     shuffleKey,
@@ -85,18 +94,6 @@ const Keypad = ({ mixedKey = false, shuffleKey = false }) => {
     }
     return item;
   });
-
-  const handleGridClick = (event) => {
-    const button = event.target.closest("button");
-    if (!button || button.classList.contains("kp__btn--dummy")) return;
-
-    const key = button.dataset.key;
-    console.log("버튼 눌림: ", key);
-    if (key != null) {
-      onDigitPress();
-      setPressedKey(Number(key));
-    }
-  };
 
   useEffect(() => {
     if (!mixedKey || pressedKey === null) {
