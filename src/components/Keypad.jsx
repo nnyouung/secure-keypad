@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+// 키패드 처리
+// props로 mixedKey boolean
+// true면 키패드에서 눌린 키를(pressedKey) 컴포넌트 MixedKey의 props로 전달
+// 응답값을 가져와 키패드에서 두 개를 시각처리
+
 import createMixedKey from "@/utils/createMixedKey";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useShuffleKeys from "@/utils/useShuffleKeys";
 import KeypadBackspace from "./KeypadBackspace";
 import KeypadClear from "./KeyPadClear";
