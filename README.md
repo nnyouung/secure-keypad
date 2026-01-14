@@ -18,9 +18,9 @@ React 기반의 커스텀 키패드 컴포넌트 프로젝트입니다.
 npm install
 # 또는
 yarn install
+```
 
-
-# 기본 키패드 props
+## 기본 키패드 props
 | 속성 | 기본값 | 타입 |
 | --- | --- | --- |
 | shuffleKey | false | true / false |
