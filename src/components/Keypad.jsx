@@ -5,6 +5,7 @@
 
 import createMixedKey from "@/utils/createMixedKey";
 import { useState, useEffect } from "react";
+import useShuffleKeys from "@/utils/useShuffleKeys";
 
 const keypadItems = [
   { type: "num", value: 1 },
@@ -23,9 +24,23 @@ const keypadItems = [
   { type: "dummy" },
 ];
 
-const Keypad = ({ mixedKey = false }) => {
+const Keypad = ({ mixedKey = false, shuffleKey = false }) => {
   const [pressedKey, setPressedKey] = useState(null);
   const [mixedKeys, setMixedKeys] = useState([]);
+
+  const { keys: shuffledKeys, onDigitPress } = useShuffleKeys({
+    shuffleKey,
+  });
+
+  let cursor = 0;
+  const keypadItemsWithShuffle = keypadItems.map((item) => {
+    if (item.type === "num" || item.type === "dummy") {
+      const next = shuffledKeys[cursor];
+      cursor += 1;
+      return next ?? { type: "dummy" };
+    }
+    return item;
+  });
 
   const handleGridClick = (event) => {
     const button = event.target.closest("button");
@@ -34,6 +49,7 @@ const Keypad = ({ mixedKey = false }) => {
     const key = button.dataset.key;
     console.log("버튼 눌림: ", key);
     if (key != null) {
+      onDigitPress();
       setPressedKey(Number(key));
     }
   };
@@ -58,7 +74,7 @@ const Keypad = ({ mixedKey = false }) => {
   return (
     <div className="kp">
       <div className="kp__grid" onClick={handleGridClick}>
-        {keypadItems.map((item, index) => {
+        {keypadItemsWithShuffle.map((item, index) => {
           if (item.type === "num") {
             const isMixedKey = mixedKeys.includes(item.value);
             return (
