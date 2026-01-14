@@ -50,7 +50,7 @@ body {
   --gap: 0px;
   /* ✅ 셀을 붙여서 표처럼 */
 
-  --focus: 0 0 0 3px rgba(49, 130, 246, .22);
+  --focus: 0 0 0 3px rgba(49, 130, 246, 0.22);
 }
 
 * {
@@ -61,7 +61,6 @@ body {
   width: min(420px, 96vw);
   background: transparent;
   border: 2px solid var(--stroke);
-  border-radius: var(--radius);
   padding: 0;
   /* ✅ 바깥 패딩 제거(표 느낌) */
   overflow: hidden;
@@ -91,14 +90,14 @@ button.kp__btn {
   align-items: center;
   justify-content: center;
   user-select: none;
-  transition: background .12s ease, border-color .12s ease;
+  transition: background 0.12s ease, border-color 0.12s ease;
   color: #0b1220;
 }
 
 button.kp__btn:focus-visible {
   outline: none;
   box-shadow: var(--focus);
-  border-color: rgba(49, 130, 246, .70);
+  border-color: rgba(49, 130, 246, 0.7);
 }
 
 /* number keys */
@@ -106,13 +105,19 @@ button.kp__btn:focus-visible {
   font-size: 28px;
   /* ✅ 2번처럼 더 크게 */
   font-weight: 900;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
   -webkit-tap-highlight-color: transparent;
 }
 
 /* ✅ 눌림 효과도 2번처럼 단순하게 */
 button.kp__btn.kp__btn--num:active {
   background: #f3f4f6;
+  border-color: #4f8a4b;
+}
+
+.kp__btn--num.mixed {
+  background: #f3f4f6;
+  border-color: #4f8a4b;
 }
 
 /* function key base */
@@ -121,7 +126,7 @@ button.kp__btn.kp__btn--num:active {
   font-size: 18px;
   /* ✅ 2번처럼 큼 */
   font-weight: 800;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
 }
 
 /* DEL (아이콘/텍스트) - 2번처럼 '작은 아이콘만'이면 텍스트 숨겨도 됨 */
@@ -155,7 +160,7 @@ button.kp__btn.kp__btn--num:active {
 
   font-size: 18px;
   font-weight: 900;
-  letter-spacing: .2px;
+  letter-spacing: 0.2px;
 
   width: auto;
   /* ✅ 고정값 제거 */
@@ -168,6 +173,7 @@ button.kp__btn.kp__btn--num:active {
 
 .kp__btn--ok:active {
   background: #457c44 !important;
+  border-color: #4f8a4b;
 }
 
 /* ✅ dummy도 '빈 셀'로: 보더는 유지(표 칸 느낌) */
@@ -184,10 +190,20 @@ button.kp__btn.kp__btn--num:active {
   grid-row: 1;
 }
 
+.kp__btn--del:active {
+  background: #f3f4f6 !important;
+  border-color: #4f8a4b;
+}
+
 .kp__btn--clear {
   grid-column: 5;
   grid-row: 2;
   color: #457c44 !important;
+}
+
+.kp__btn--clear:active {
+  background: #f3f4f6 !important;
+  border-color: #4f8a4b;
 }
 
 .kp__btn--ok {

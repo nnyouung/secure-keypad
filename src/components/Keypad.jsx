@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import createMixedKey from "@/utils/createMixedKey";
 import useShuffleKeys from "@/utils/useShuffleKeys";
-import KeypadBackspace from "./KeypadBackspace";
-import KeypadClear from "./KeyPadClear";
-import KeypadOk from "./KeyPadOk";
+import { getKeypadActionHandler } from "@/utils/keypadActionHandler";
 
 const keypadItems = [
   { type: "num", value: 1 },
@@ -84,8 +82,12 @@ const Keypad = ({
         : { type: "num", value: key != null ? Number(key) : undefined };
 
       onPress?.(payload);
+
+      if (action === "del") onBackspaceClick?.();
+      if (action === "clear") onClearClick?.();
+      if (action === "ok") onOkClick?.();
     },
-    [onPress, pressCooldown]
+    [onPress, onOkClick, onBackspaceClick, onClearClick, pressCooldown]
   );
 
   const { keys: shuffledKeys, onDigitPress } = useShuffleKeys({
@@ -128,40 +130,44 @@ const Keypad = ({
             return (
               <button
                 key={`num-${item.value}`}
-                className="kp__btn kp__btn--num"
+                className={`kp__btn kp__btn--num ${isMixedKey ? "mixed" : ""}`}
                 type="button"
                 data-key={item.value}
                 onClick={handlePress}
                 disabled={cooling}
-                style={
-                  isMixedKey
-                    ? {
-                        background: "var(--blue-weak)",
-                        borderColor: "rgba(49,130,246,.75)",
-                      }
-                    : undefined
-                }
               >
                 {item.value}
               </button>
             );
           }
 
-          if (item.type === "del") {
+          if (
+            item.type === "del" ||
+            item.type === "clear" ||
+            item.type === "ok"
+          ) {
+            const onClick = getKeypadActionHandler({
+              type: item.type,
+              onOkClick,
+              onBackspaceClick,
+              onClearClick,
+              onPress,
+            });
+
             return (
-              <KeypadBackspace
-                onBackspace={onBackspaceClick}
-                disabled={false}
-              />
+              <button
+                key={`${item.type}-${index}`}
+                className={`kp__btn kp__btn--${item.type}`}
+                type="button"
+                onClick={onClick}
+                data-action={item.type}
+                disabled={cooling}
+              >
+                {item.type === "del" && "⌫"}
+                {item.type === "clear" && "초기화"}
+                {item.type === "ok" && "OK"}
+              </button>
             );
-          }
-
-          if (item.type === "ok") {
-            return <KeypadOk onOk={onOkClick} disabled={false} />;
-          }
-
-          if (item.type === "clear") {
-            return <KeypadClear onClear={onClearClick} disabled={false} />;
           }
 
           if (item.type === "dummy") {
