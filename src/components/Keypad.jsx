@@ -4,7 +4,7 @@
 // 응답값을 가져와 키패드에서 두 개를 시각처리
 
 import createMixedKey from "@/utils/createMixedKey";
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useShuffleKeys from "@/utils/useShuffleKeys";
 import KeypadBackspace from "./KeypadBackspace";
 import KeypadClear from "./KeyPadClear";
