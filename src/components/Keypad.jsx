@@ -22,9 +22,9 @@ const keypadItems = [
 ];
 
 const Keypad = ({
-  mixedKey = false,
-  shuffleKey = false,
-  pressCooldown = 500,
+  mixedKey = false, // 동시 키 눌림 효과
+  shuffleKey = false, // 숫자키 섞기
+  pressCooldown = 500, // 버튼 누른 후 쿨다운 시간 (ms)
   onPress,
   onOkClick,
   onBackspaceClick,
@@ -141,6 +141,7 @@ const Keypad = ({
             );
           }
 
+          // 액션 버튼 (삭제, 초기화 ,확인)
           if (
             item.type === "del" ||
             item.type === "clear" ||
