@@ -14,13 +14,12 @@ function shuffle(arr){
 const RESET_AFTER = 4;
 
 // 1. 숫자 키 목록 생성
-// 2. mixedKey=true면 더미 키 추가
+// 2. 더미키 2개 생성
 // 3. shuffleKey=true면 숫자랑 더미 같이 섞기
 // 4. 숫자 입력 4회 넘으면 재셔플
 export default function useShuffleKeys({
  numbers = [1,2,3,4,5,6,7,8,9,0],
  shuffleKey = false,
- mixedKey = false,
 } = {}) {
  const pressCountRef = useRef(0); // 숫자 몇 번 눌렀는지 저장하는 변수
  const [shuffleTick, setShuffleTick] = useState(0); // 재셔플하기위한 useState
@@ -32,9 +31,8 @@ export default function useShuffleKeys({
    value: n,
   }))
 
-  // 2. mixedKey=true면 더미 2개 생성
-  const dummyKeys = mixedKey ? 
-   Array.from({ length: 2 }, () => ({type: "dummy" })) : [];
+  // 2. 더미 2개 생성
+  const dummyKeys = Array.from({ length: 2 }, () => ({ type: "dummy" }));
   
    // 숫자+더미 한 배열로 합치기
    const base = [...digitKeys, ...dummyKeys];
