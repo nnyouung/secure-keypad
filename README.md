@@ -23,6 +23,7 @@ yarn install
 | --- | --- | --- |
 | shuffleKey | false | true / false |
 | mixedKey | false | true / false |
+| pressCooldown | 500 | number |
 | onOk | - | () => void |
 | onBackspaceClick | - | () => void |
 | onClear | - | () => void |
